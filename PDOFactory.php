@@ -1,5 +1,6 @@
 <?php
     class PDOFactory{
+        //private: para criar somente uma conexão
         private static $pdo;
 
         public static function getConnection(){
@@ -7,7 +8,7 @@
                 $connection = "mysql:host=localhost;dbname=cervejaria_taita";
                 $user = "root";
                 $pass = "";
-
+                
                 $pdo = new PDO($connection, $user, $pass);
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -17,4 +18,5 @@
             return $pdo;
         }
     }
+
 ?>

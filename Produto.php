@@ -8,14 +8,14 @@
         public $dataEstoque;
         public $quantidade;
 
-        function _construct($id, $nome, $tipo, $envase, $valorUnitario, $dataEstoque, $quantidade){
+        function __construct($id, $nome, $tipo, $envase, $valorUnitario, $dataEstoque, $quantidade){
             $this->id = $id;
             $this->nome = $nome;
             $this->tipo = $tipo;
             $this->envase = $envase;
             $this->valorUnitario = $valorUnitario;
             $this->dataEstoque = $dataEstoque;
-            $this->quantidade = $quantidade
+            $this->quantidade = $quantidade;
         }
 
         function getId(){
