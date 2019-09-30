@@ -6,16 +6,16 @@
         public $envase;
         public $valorUnitario;
         public $dataEstoque;
-        public $quantidade;
+ //       public $quantidade;
 
-        function __construct($id, $nome, $tipo, $envase, $valorUnitario, $dataEstoque, $quantidade){
+        function __construct($id, $nome, $tipo, $envase, $valorUnitario, $dataEstoque){
             $this->id = $id;
             $this->nome = $nome;
             $this->tipo = $tipo;
             $this->envase = $envase;
             $this->valorUnitario = $valorUnitario;
             $this->dataEstoque = $dataEstoque;
-            $this->quantidade = $quantidade;
+ //           $this->quantidade = $quantidade;
         }
 
         function getId(){
@@ -42,9 +42,9 @@
             return $this->dataEstoque;
         }
 
-        function getQuantidade(){
+/*        function getQuantidade(){
             return $this->quantidade;
-        }
+        }*/
 
         function setNome(){
             $this->nome = $nome;
@@ -66,9 +66,9 @@
             $this->dataEstoque = $dataEstoque;
         }
 
-        function setQuantidade(){
+ /*       function setQuantidade(){
             $this->quantidade = $quantidade;
-        }
+        }*/
 
 
 

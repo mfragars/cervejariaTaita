@@ -2,52 +2,49 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
-include_once 'ProdutoDAO.php';
+include_once('ProdutoController.php');
+include_once('ClienteController.php');
+include_once('UsuarioController.php');
+include_once('VendaController.php');
+
+
 
 require __DIR__ . './vendor/autoload.php';
 
 $app = AppFactory::create();
-$app->get('/api/produtos', function(Request $request, Response $response, array $args){
-    $dao = new ProdutoDAO;
-    $produtos = array();
-    $produtos[] = $dao->listAll();
-    $response = $response->withJSON($produtos);
-    return $response;
+
+$app->group('/api/produtos', function($app){
+    $app->get('', 'ProdutoController:selectAll');
+    $app->get('/{id}', 'ProdutoController:selectById');
+    $app->post('', 'ProdutoController:insertProduto');
+    $app->put('/{id}', 'ProdutoController:updateProduto');
+    $app->delete('/{id}', 'ProdutoController:deleteById');
+})->add('UsuarioController:validaToken');
+
+$app->group('/api/clientes', function($app){
+    $app->get('', 'ClienteController:selectAll');
+    $app->get('/{id}', 'ClienteController:selectById');
+    $app->post('', 'ClienteController:insertCliente');
+    $app->put('/{id}', 'ClienteController:updateCliente');
+    $app->delete('/{id}', 'ClienteController:deleteById');
+})->add('UsuarioController:validaToken');
+
+$app->group('/api/vendas', function($app){
+    $app->get('', 'VendaController:selectAllVendas');
+    $app->get('/{id}', 'VendaController:selectVendaById');
+    $app->post('', 'VendaController:insertVenda');
+    $app->put('/{id}', 'VendaController:updateVenda');
+    $app->delete('{id}', 'VendaController:deleteVendaById');
+})->add('UsuarioController:validaToken');
+
+$app->group('/api/usuarios', function($app){
+    $app->get('', 'UsuarioController:listar');
+    $app->post('', 'UsuarioController:insertUsers');
+})->add('UsuarioController:validaToken');
+
+$app->group('/api/auth', function($app){
+    $app->post('', 'UsuarioController:validaUser');
 });
-
-$app->get('/api/produtos/{id}', function(Request $request, Response $response, $args){
-    $dao = new ProdutoDAO;
-    $produto = $dao->searchById($args['id']);
-    $response = $response->withJSON($produto);
-    return $response;
-});
-
-$app->post('/api/produtos', function(Request $request, Response $response, $args){
-    $parseBody = $request->getParsedBody();
-    $produto = new Produto(0, $parseBody['nome'], $parseBody['tipo'], $parseBody['envase'], $parseBody['valorUnitario'], $parseBody['dataEstoque'], $parseBody['quantidade']);
-    $dao = new ProdutoDAO;
-    $produto = $dao->insertProd($produto);
-    $response = $response->withJSON($produto)->withHeader('content-type', 'application/json');
-    return $response;
-});
-
-$app->put('/api/produtos/{id}', function(Request $request, Response $response, $args){
-    $parseBody = $request->getParsedBody();
-    $produto = new Produto($args['id'], $parseBody['nome'], $parseBody['tipo'], $parseBody['envase'], $parseBody['valorUnitario'], $parseBody['dataEstoque'], $parseBody['quantidade']);
-    $dao = new ProdutoDAO;
-    $produto = $dao->updateProd($produto);
-    $response = $response->withJSON($produto);
-    return $response;
-});
-
-$app->delete('/api/produtos/{id}', function(Request $request, Response $response, $args){
-    $dao = new ProdutoDAO;
-    $produto = $dao->deleteById($args['id']);
-    $response = $response->withJSON($produto);
-    return $response;
-});
-
-
 
 $app->run();
 
